@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/inszndb', { useNewUrlParser: true })
+//really insecure but... i dont care about these creds (try delete my data if you want to put in that effort lol, its only 60 documents)
+mongoose.connect('mongodb+srv://garrett:devil@cluster0-kjttj.mongodb.net/inszn?retryWrites=true&w=majority', { useUnifiedTopology: true,useNewUrlParser: true })
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('connected to database'))
@@ -14,7 +15,7 @@ var schema = new Schema(
     },
     {
         collection: 'fruit'
-    }
+    },
 )
 var Produce = mongoose.model('Produce', schema);
 
