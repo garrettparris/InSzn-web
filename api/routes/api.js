@@ -13,21 +13,18 @@ var schema = new Schema(
         name: String,
         months: [Number],
     },
-    {
-        collection: 'fruit'
-    },
 )
-var Produce = mongoose.model('Produce', schema);
 
-
-router.get('/:id', async (req, res) =>
+router.get('/:month/:type', async (req, res) =>
 {
 
 
     try {
-        console.log(req.params.id)
+        var Produce = mongoose.model('Produce', schema,req.params.type);
 
-        const produce = await Produce.find({'months': req.params.id})
+        console.log(req.params.month)
+        schema.collection = req.params.type
+        const produce = await Produce.find({'months': req.params.month})
         res.send(produce)
         console.log(produce)
       } catch (err) {
