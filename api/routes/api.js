@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose')
+var bodyParser = require('body-parser');
+
+// var cors = require('cors')
 //really insecure but... i dont care about these creds (try delete my data if you want to put in that effort lol, its only 60 documents)
 mongoose.connect('mongodb+srv://garrett:devil@cluster0-kjttj.mongodb.net/inszn?retryWrites=true&w=majority', { useUnifiedTopology: true,useNewUrlParser: true })
 const db = mongoose.connection
@@ -15,6 +18,7 @@ var schema = new Schema(
     },
 )
 
+// router.all('*',cors())
 router.get('/:month/:type', async (req, res) =>
 {
 
@@ -24,8 +28,8 @@ router.get('/:month/:type', async (req, res) =>
 
         console.log(req.params.month)
         schema.collection = req.params.type
-        const produce = await Produce.find({'months': req.params.month})
-        res.send(produce)
+        const produce = await Produce.find({'months': req.params.month}, '-_id name')
+        res.status(200).json(produce)
         console.log(produce)
       } catch (err) {
         res.status(500).json({ message: err.message })
